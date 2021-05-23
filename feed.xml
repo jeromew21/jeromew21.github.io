@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jerome Wei</title>
+    <description></description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 22 May 2021 18:13:22 -0700</pubDate>
+    <lastBuildDate>Sat, 22 May 2021 18:13:22 -0700</lastBuildDate>
+    <generator>Jekyll v3.9.1</generator>
+    
+      <item>
+        <title>Chess Engine</title>
+        <description>
+</description>
+        <pubDate>Fri, 21 May 2021 14:15:00 -0700</pubDate>
+        <link>http://localhost:4000/project/2021/05/21/chess.html</link>
+        <guid isPermaLink="true">http://localhost:4000/project/2021/05/21/chess.html</guid>
+        
+        <category>chess</category>
+        
+        <category>ai</category>
+        
+        <category>search-tree</category>
+        
+        
+        <category>project</category>
+        
+      </item>
+    
+      <item>
+        <title>Crease Pattern Editor</title>
+        <description>
+</description>
+        <pubDate>Fri, 21 May 2021 14:15:00 -0700</pubDate>
+        <link>http://localhost:4000/project/2021/05/21/crease.html</link>
+        <guid isPermaLink="true">http://localhost:4000/project/2021/05/21/crease.html</guid>
+        
+        <category>origami</category>
+        
+        <category>ui</category>
+        
+        <category>geometry</category>
+        
+        
+        <category>project</category>
+        
+      </item>
+    
+  </channel>
+</rss>

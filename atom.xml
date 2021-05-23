@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>Jerome Wei</title>
+ <link href="http://localhost:4000/atom.xml" rel="self"/>
+ <link href="http://localhost:4000/"/>
+ <updated>2021-05-22T18:13:22-07:00</updated>
+ <id>http://localhost:4000</id>
+ <author>
+   <name>Jerome Wei</name>
+   <email></email>
+ </author>
+
+ 
+ <entry>
+   <title>Chess Engine</title>
+   <link href="http://localhost:4000/project/2021/05/21/chess.html"/>
+   <updated>2021-05-21T14:15:00-07:00</updated>
+   <id>http://localhost:4000/project/2021/05/21/chess</id>
+   <content type="html">
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Crease Pattern Editor</title>
+   <link href="http://localhost:4000/project/2021/05/21/crease.html"/>
+   <updated>2021-05-21T14:15:00-07:00</updated>
+   <id>http://localhost:4000/project/2021/05/21/crease</id>
+   <content type="html">
+</content>
+ </entry>
+ 
+
+</feed>
