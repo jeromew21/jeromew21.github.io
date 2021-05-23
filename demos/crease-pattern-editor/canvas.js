@@ -264,10 +264,10 @@ class Canvas {
             self.draw();
 
             var canv2 = document.getElementById("canvas-secondary");
-            canv2.width = Canvas.unit;
-            canv2.height = Canvas.unit;
+            canv2.width = self.paper.width;
+            canv2.height = self.paper.height;
             var ctx2 = canv2.getContext('2d');
-            ctx2.drawImage(self.canvas, self.translation.x, self.translation.y, Canvas.unit, Canvas.unit, 0, 0, Canvas.unit, Canvas.unit);
+            ctx2.drawImage(self.canvas, self.translation.x, self.translation.y, canv2.width, canv2.height, 0, 0, canv2.width, canv2.height);
             var dataUrl = canv2.toDataURL("image/png");
             window.open(dataUrl);
         });
@@ -354,6 +354,10 @@ class Canvas {
                 self.setInspectorAttr("locked", value);
             }),
         }
+
+        new Checkbox("ui-settings", "base", "Show paper", true, function (value) {
+            self.paper.show = value;
+        });
 
         new Checkbox("ui-settings", "base", "Show circles", true, function (value) {
             self.circles.show = value;

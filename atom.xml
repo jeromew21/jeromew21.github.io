@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>Jerome Wei</title>
- <link href="http://localhost:4000/atom.xml" rel="self"/>
- <link href="http://localhost:4000/"/>
- <updated>2021-05-22T21:26:15-07:00</updated>
- <id>http://localhost:4000</id>
+ <link href="https://jerome.cloud/atom.xml" rel="self"/>
+ <link href="https://jerome.cloud/"/>
+ <updated>2021-05-22T22:22:09-07:00</updated>
+ <id>https://jerome.cloud</id>
  <author>
    <name>Jerome Wei</name>
    <email></email>
@@ -14,18 +14,18 @@
  
  <entry>
    <title>Chess Engine</title>
-   <link href="http://localhost:4000/project/2021/05/21/chess.html"/>
+   <link href="https://jerome.cloud/project/2021/05/21/chess.html"/>
    <updated>2021-05-21T14:15:00-07:00</updated>
-   <id>http://localhost:4000/project/2021/05/21/chess</id>
+   <id>https://jerome.cloud/project/2021/05/21/chess</id>
    <content type="html">
 </content>
  </entry>
  
  <entry>
    <title>Crease Pattern Editor</title>
-   <link href="http://localhost:4000/project/2021/05/21/crease.html"/>
+   <link href="https://jerome.cloud/project/2021/05/21/crease.html"/>
    <updated>2021-05-21T14:15:00-07:00</updated>
-   <id>http://localhost:4000/project/2021/05/21/crease</id>
+   <id>https://jerome.cloud/project/2021/05/21/crease</id>
    <content type="html">
 </content>
  </entry>

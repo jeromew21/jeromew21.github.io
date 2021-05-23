@@ -82,6 +82,10 @@ class Paper extends CanvasObject {
     getType() { return "Paper"; }
 
     draw() {
+        if (!this.show) {
+            return;
+        }
+        
         var ctx = this.canvas.ctx;
         var w = this.width * this.canvas.zoom;
         var h = this.height * this.canvas.zoom;
