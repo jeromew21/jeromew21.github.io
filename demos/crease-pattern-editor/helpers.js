@@ -76,11 +76,26 @@ function inBoundsTriangle(pt, v1, v2, v3) {
 }
 
 
+function norm(c) {
+    return Math.sqrt(c.x * c.x + c.y * c.y)
+}
+
 function dist(c1, c2) {
     var dx = c1.x - c2.x;
     var dy = c1.y - c2.y;
 
     return Math.sqrt(dx * dx + dy * dy);
+}
+
+function triangleCenter(c1, c2, c3) {
+    var s1 = dist(c2, c3);
+    var s2 = dist(c1, c3);
+    var s3 = dist(c1, c2);
+    var sum = s1 + s2 + s3;
+    return {
+        x: (c1.x * s1 + c2.x * s2 + c3.x * s3) / sum,
+        y: (c1.y * s1 + c2.y * s2 + c3.y * s3) / sum,
+    }
 }
 
 /**
@@ -113,11 +128,26 @@ function axiom4(line, pt) {
 
 function strokeCircle(ctx, coords, r) {
     ctx.beginPath();
-    ctx.arc(coords.x, coords.y, r, 0, 2*Math.PI);
+    ctx.arc(coords.x, coords.y, r, 0, 2 * Math.PI);
     ctx.stroke();
 }
 
-Array.prototype.remove = function() {
+function drawX(ctx, coords, r) {
+    var x = coords.x;
+    var y = coords.y;
+
+    ctx.lineWidth = penSize.line;
+    ctx.strokeStyle = "#ff0000";
+
+    ctx.beginPath();
+    ctx.moveTo(x - r, y - r);
+    ctx.lineTo(x + r, y + r);
+    ctx.moveTo(x - r, y + r);
+    ctx.lineTo(x + r, y - r);
+    ctx.stroke();
+}
+
+Array.prototype.remove = function () {
     var what, a = arguments, L = a.length, ax;
     while (L && this.length) {
         what = a[--L];
@@ -127,3 +157,37 @@ Array.prototype.remove = function() {
     }
     return this;
 };
+
+/**
+ * for grid snapping, this function takes two lists of coordinates
+ * and returns the min pair as well as the delta cross lists.
+ * 
+ * TODO: Optimize. Currently runs O(mn).
+ */
+function minPair(objCoords, snapCoords) {
+    // return 3 objects: objCoord, snapCoord, and delta b/t them
+    var minDist = Infinity;
+    var oC = objCoords[0];
+    var sC = snapCoords[0];
+    for (var i = 0; i < objCoords.length; i++) {
+        var objCoord = objCoords[i];
+        for (var k = 0; k < snapCoords.length; k++) {
+            var snapCoord = snapCoords[k];
+            var d = dist(objCoord, snapCoord);
+            if (d < minDist) {
+                minDist = d;
+                oC = objCoord;
+                sC = snapCoord;
+            }
+        }
+    }
+
+    return {
+        objCoord: oC,
+        snapCoord: sC,
+        delta: {
+            x: sC.x - oC.x,
+            y: sC.y - oC.y
+        }
+    }
+}

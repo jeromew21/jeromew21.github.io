@@ -16,8 +16,16 @@ class CanvasObject {
         return this.name_;
     }
 
+    setAttr(a, v) {
+        this[a] = v;
+    }
+
     copy() {
         return {};
+    }
+
+    points() {
+        return [];
     }
 
     /* Return a list of lines for snapping */
@@ -85,7 +93,7 @@ class Paper extends CanvasObject {
         if (!this.show) {
             return;
         }
-        
+
         var ctx = this.canvas.ctx;
         var w = this.width * this.canvas.zoom;
         var h = this.height * this.canvas.zoom;
@@ -139,11 +147,15 @@ class Circle extends CanvasObject {
         return this.name_;
     }
 
+    points() {
+        return [{ x: this.x, y: this.y }]
+    }
+
     copy() {
         return new Circle(this.x, this.y, this.radius, this.canvas);
     }
 
-    isPointInside(coords,) {
+    isPointInside(coords) {
         var dx = coords.x - this.xRel();
         var dy = coords.y - this.yRel();
 
@@ -248,13 +260,31 @@ class Triangle extends Tile {
     static count = 0;
     static black = '#000000';
 
+    static method = {
+        SAS: "SAS",
+        COORDS: "COORDS",
+    }
+
     constructor(x, y, theta, l1, l2, rotation, canvas) {
         super(x, y, canvas);
+
         // SAS (side-angle-side)
         this.theta = theta; // in degrees
         this.l1 = l1;
         this.l2 = l2;
         this.rotation = rotation;
+
+        // Coords (just each vertex)
+        this.threeCoords = {
+            c1: { x: 0, y: 0 },
+            c2: { x: 0, y: 0 },
+            c3: { x: 0, y: 0 },
+        };
+
+        this.method = Triangle.method.SAS;
+
+
+
         this.name_ = "triangle" + Triangle.count;
         Triangle.count += 1;
         this.isSelected = false;
@@ -280,26 +310,21 @@ class Triangle extends Tile {
 
 
     draw() {
+        var pts = this.pointsRel();
         var ctx = this.canvas.context;
-        var zoom = this.canvas.zoom;
-        var offset = this.canvas.offset;
-
-        var pts = this.points(offset, zoom);
         var c1 = pts.c1;
         var c2 = pts.c2;
         var c3 = pts.c3;
         var incenter = pts.incenter;
 
         ctx.strokeStyle = Triangle.black;
-        ctx.fillStyle = Triangle.black; 
+        ctx.fillStyle = Triangle.black;
 
         if (this.isSelected) {
             ctx.lineWidth = penSize.line * 3;
         } else {
             ctx.lineWidth = penSize.line;
         }
-
-        
 
         ctx.strokeStyle = "#7bed9f";
         ctx.beginPath();
@@ -317,21 +342,21 @@ class Triangle extends Tile {
         ctx.moveTo(incenter.x, incenter.y);
         ctx.lineTo(p1.x, p1.y);
         ctx.stroke();
-        
+
         var p2 = axiom4({ c1: c1, c2: c3 }, incenter);
         ctx.beginPath();
         ctx.moveTo(incenter.x, incenter.y);
         ctx.lineTo(p2.x, p2.y);
         ctx.stroke();
 
-        ctx.lineWidth = ctx.lineWidth * 2; 
+        ctx.lineWidth = ctx.lineWidth * 2;
         var p3 = axiom4({ c1: c2, c2: c3 }, incenter);
         ctx.beginPath();
         ctx.moveTo(incenter.x, incenter.y);
         ctx.lineTo(p3.x, p3.y);
         ctx.stroke();
-        ctx.lineWidth = ctx.lineWidth / 2; 
-        
+        ctx.lineWidth = ctx.lineWidth / 2;
+
         ctx.strokeStyle = Triangle.black;
         ctx.beginPath();
         ctx.moveTo(c1.x, c1.y);
@@ -357,7 +382,17 @@ class Triangle extends Tile {
         }
     }
 
+    points() {
+        var pts = this.pointsAbs();
+        return [pts.c1, pts.c2, pts.c3];
+    }
+
+    // The original points in absolute (actual) terms.
     pointsAbs() {
+        if (this.method == Triangle.method.COORDS) {
+            return this.threeCoords;
+        }
+
         var rLength1 = this.l1;
         var rLength2 = this.l2;
 
@@ -389,9 +424,22 @@ class Triangle extends Tile {
         };
     }
 
-    points() {
+    // The rendered, relative points.
+    pointsRel() {
+        if (this.method == Triangle.method.COORDS) {
+            var c1 = this.threeCoords.c1;
+            var c2 = this.threeCoords.c2;
+            var c3 = this.threeCoords.c3;
+
+            return {
+                c1: this.canvas.renderCoord(c1),
+                c2: this.canvas.renderCoord(c2),
+                c3: this.canvas.renderCoord(c3),
+                incenter: this.canvas.renderCoord(triangleCenter(c1, c2, c3)),
+            }
+        }
+
         var zoom = this.canvas.zoom;
-        var offset = this.canvas.offset;
 
         var rLength1 = this.l1 * zoom;
         var rLength2 = this.l2 * zoom;
@@ -439,10 +487,24 @@ class Triangle extends Tile {
         var zoom = this.canvas.zoom;
         var offset = this.canvas.offset;
 
-        var pts = this.points(offset, zoom);
+        var pts = this.pointsRel();
         var c1 = pts.c1;
         var c2 = pts.c2;
         var c3 = pts.c3;
+
+        // if (this.method == Triangle.method.COORDS) {
+        //     var mp = minPair([coords], [c1, c2, c3]);
+        //     if (norm(mp.delta) < 20) {
+        //         return {
+        //             val: true,
+        //             coord: mp.snapCoord
+        //         }
+        //     } else {
+        //         return {
+        //             val: inBoundsTriangle(coords, c1, c2, c3),
+        //         }
+        //     }
+        // }
 
         return inBoundsTriangle(coords, c1, c2, c3);
     }

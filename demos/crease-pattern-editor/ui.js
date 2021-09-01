@@ -140,6 +140,55 @@ class SlidingInput {
     }
 }
 
+class OptionInput {
+    static html(domId, value, label, labels, classes) {
+        var val = '<div class="' + classes + '"><label for="'
+            + domId
+            + '">' + label + ':&nbsp;</label>'
+            + '<select id="' + domId + '" name="' + domId + '">';
+
+        for (var i = 0; i < labels.length; i++) {
+            var selected = "";
+            if (labels[i] == value) {
+                selected = " selected";
+            }
+
+            val += '<option name="' + labels[i] + '"' + selected + '>' + labels[i] + '</option>'
+        }
+
+        val = val + '</select>'
+            + '</div>';
+        return val;
+    }
+
+    constructor(parentId, classes, label, labels, value, onChange) {
+        this.value = value;
+        this.onChange = onChange;
+        this.labels = labels;
+        this.label = label;
+
+        var self = this;
+
+        this.domId = "ui-" + label.replaceAll(" ", "-") + nDigitRand(3);
+        this.element = $(OptionInput.html(this.domId, this.value, this.label, this.labels, classes));
+
+        var parentElement = $("#" + parentId);
+        parentElement.append(this.element);
+        parentElement.on("change", "#" + this.domId, function (e) {
+            var val = $(e.target).val();
+            self.value = val;
+            self.onChange(val);
+        })
+
+        this.onChange(value);
+    }
+
+    set(value) {
+        this.value = value;
+        // $("#" + this.domId).val(value);
+    }
+}
+
 class StringInput {
     static html(domId, value, label, classes) {
         return '<div class="' + classes + '"><label for="'
@@ -181,7 +230,7 @@ class NumberInput {
         return '<div class="' + classes + '"><label for="'
             + domId
             + '">' + label + '</label>'
-            + '<input type="number" value="' + value + '" name="' + domId + '" id="' + domId + '" />'
+            + '<input class="number-input" type="number" value="' + value + '" name="' + domId + '" id="' + domId + '" />'
             + '</div>';
     }
 
@@ -209,23 +258,27 @@ class NumberInput {
 }
 
 class FloatInput {
-    static html(domId, value, label, classes, mul) {
+    static html(domId, value, label, classes, mul, unit) {
         if (mul) {
-            mul = ' * <select id="' + domId + '-sel"><option value=1 selected>1</option>'
-                + '<option value=2>&#8730; 2</option>'
-                + '<option value=3>&#8730; 3</option></select>';
+            mul = ' * <select id="' + domId + '-sel"><option value=1 selected>1</option>';
+            var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+            for (var i = 0; i < 4; i++) {
+                mul += "<option value=" + primes[i] + ">&#8730;" + primes[i] + "</option>";
+            }
+
+            mul += '</select>';
         } else {
             mul = ""
         }
         return '<div class="' + classes + '"><label for="'
             + domId
             + '">' + label + '</label>'
-            + '<input type="text" value="' + value + '" name="' + domId + '" id="' + domId + '" />'
+            + '<input type="text" value="' + value + '" name="' + domId + '" id="' + domId + '" class="number-input" /> ' + unit
             + mul
             + '</div>';
     }
 
-    constructor(parentId, classes, label, value, mul, onChange) {
+    constructor(parentId, classes, label, value, mul, onChange, unit) {
         this.labelText = label + ":&nbsp;";
         this.value = parseFloat(value);
         this.actualValue = this.value;
@@ -236,7 +289,7 @@ class FloatInput {
         var self = this;
 
         this.domId = "ui-" + label.replaceAll(" ", "-") + nDigitRand(3);
-        this.element = $(FloatInput.html(this.domId, this.value, this.labelText, classes, mul));
+        this.element = $(FloatInput.html(this.domId, this.value, this.labelText, classes, mul, unit));
 
         var inputSelector = "#" + this.domId;
         var mulSelector = "#" + this.domId + "-sel";
