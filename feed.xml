@@ -5,8 +5,8 @@
     <description></description>
     <link>https://jerome.cloud/</link>
     <atom:link href="https://jerome.cloud/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 31 Aug 2021 17:40:59 -0700</pubDate>
-    <lastBuildDate>Tue, 31 Aug 2021 17:40:59 -0700</lastBuildDate>
+    <pubDate>Tue, 31 Aug 2021 17:51:40 -0700</pubDate>
+    <lastBuildDate>Tue, 31 Aug 2021 17:51:40 -0700</lastBuildDate>
     <generator>Jekyll v3.9.1</generator>
     
       <item>
@@ -41,6 +41,23 @@
         <category>ui</category>
         
         <category>geometry</category>
+        
+        
+        <category>project</category>
+        
+      </item>
+    
+      <item>
+        <title>Stable Marriage Visualization</title>
+        <description>
+</description>
+        <pubDate>Fri, 21 May 2021 14:13:00 -0700</pubDate>
+        <link>https://jerome.cloud/project/2021/05/21/stable.html</link>
+        <guid isPermaLink="true">https://jerome.cloud/project/2021/05/21/stable.html</guid>
+        
+        <category>algorithm</category>
+        
+        <category>visualization</category>
         
         
         <category>project</category>
